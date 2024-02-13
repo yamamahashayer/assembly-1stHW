@@ -1,0 +1,164 @@
+.data
+c1 db 0h 
+c2 db 0h
+str1  db 200 dup(?) 
+str2 db 100 dup (?) 
+
+ 
+
+ 
+ 
+conect macro
+    
+mov SI,offset str2                ;;;;;   SI at str2  &&&   DI at end of str1   ;;;;;
+mov cl,c2
+lC:
+lodsb                             ; al=[si]
+stosb                             ; [di]=al
+loop LC
+
+endm
+
+ 
+ 
+  
+
+.code 
+
+
+mov di ,offset str1
+lea SI,str2 
+
+
+
+mov bx,0
+L1:    
+   cmp bx,100        ;;;;;    DI for str1 & SI for str2     ;;;;;;
+   JAE L2
+   mov ah,1
+   int 21h
+   sub ax,30h       
+   mov  [dI],al
+   inc dI
+   inc bx
+   inc c1   
+   add ax,30h
+   cmp al,'#'
+   JNE L1
+   dec bx
+   dec DI
+   dec c1      
+        
+          
+mov ah,2                               ;;;;;;   to print new line ;;;;;;;
+mov dl,0Ah
+int 21h
+mov dl,13
+int 21h
+       
+
+    
+      
+mov bx,0 
+jmp L2 
+    
+L2:     
+   cmp bx,100
+   JAE L3
+   mov ah,1
+   int 21h
+   sub ax,30h       
+   mov [SI],al
+   inc SI
+   inc bx
+   inc c2 
+   add ax,30h
+   cmp al,'#'
+   JNE L2  
+   dec bx  
+   dec SI
+   dec c2
+                 
+           
+          
+   
+         
+          
+mov ah,2                                                   ;;;;;;   to print new line ;;;;;;;
+mov dl,0Ah
+int 21h
+mov dl,13
+int 21h
+       
+
+l3:
+conect                                                             
+                                                              
+  
+   
+mov ah,2                                                    ;;;;;;   to print new line ;;;;;;;
+mov dl,0Ah
+int 21h
+mov dl,13
+int 21h    
+   
+   
+                                                             ;;;; cx= c1+c2
+mov dl,c1
+add dl,c2
+mov cx,dx                                                      
+mov si ,offset str1     
+R11:
+mov dL,[SI]
+add dx,30h
+inc SI 
+mov ah,2                                                     ;;;;;    just to print str1   ;;;;;
+int 21h          
+loop R11       
+       
+     
+     
+        
+mov ah,2                                                     ;;;;;;   to print new line ;;;;;;;
+mov dl,0Ah
+int 21h
+mov dl,13
+int 21h 
+ 
+ 
+ 
+ 
+ 
+ 
+mov cl,c2                                                     ;;;; cx= lenght of str2 
+lea SI,str2
+R22:
+mov dL,[SI]
+add dx,30h
+inc SI 
+mov ah,2                                                     ;;;;;    just to print str2   ;;;;;
+int 21h          
+   
+loop R22       
+        
+
+ 
+ 
+ 
+mov ah,2                                                    ;;;;;;   to print new line ;;;;;;;
+mov dl,0Ah
+int 21h
+mov dl,13
+int 21h 
+ 
+       
+        
+L10: 
+    mov ah, 4Ch
+    int 21h    
+      
+                                         
+    
+      
+
+   
